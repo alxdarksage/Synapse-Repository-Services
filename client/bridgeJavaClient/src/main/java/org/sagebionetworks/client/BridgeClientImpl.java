@@ -352,7 +352,7 @@ public class BridgeClientImpl extends BaseClientImpl implements BridgeClient {
 		// Get the json for this entity
 		try {
 			JSONObject jsonObject = EntityFactory.createJSONObjectForEntity(t);
-			jsonObject = getSharedClientConnection().putJson(bridgeEndpoint, uri, jsonObject.toString(), getUserAgent());
+			jsonObject = getSharedClientConnection().putJson(bridgeEndpoint, uri, jsonObject.toString(), getUserAgent(), null);
 			// Now convert to Object to an entity
 			return (T) EntityFactory.createEntityFromJSONObject(jsonObject, t.getClass());
 		} catch (JSONObjectAdapterException e) {
@@ -364,7 +364,7 @@ public class BridgeClientImpl extends BaseClientImpl implements BridgeClient {
 		// Get the json for this entity
 		try {
 			JSONObject jsonObject = EntityFactory.createJSONObjectForEntity(ListWrapper.wrap(t, clazz));
-			jsonObject = getSharedClientConnection().putJson(bridgeEndpoint, uri, jsonObject.toString(), getUserAgent());
+			jsonObject = getSharedClientConnection().putJson(bridgeEndpoint, uri, jsonObject.toString(), getUserAgent(), null);
 			// Now convert to Object to an entity list
 			JSONObjectAdapter adapter = new JSONObjectAdapterImpl(jsonObject);
 			return ListWrapper.unwrap(adapter, clazz);
@@ -406,10 +406,14 @@ public class BridgeClientImpl extends BaseClientImpl implements BridgeClient {
 		try {
 			JSONObject jsonObject = EntityFactory.createJSONObjectForEntity(t);
 			// Send the entity
-			getSharedClientConnection().putJson(bridgeEndpoint, uri, jsonObject.toString(), getUserAgent());
+			getSharedClientConnection().putJson(bridgeEndpoint, uri, jsonObject.toString(), getUserAgent(), null);
 		} catch (JSONObjectAdapterException e) {
 			throw new SynapseException(e);
 		}
+	}
+
+	private void put(String uri) throws SynapseException {
+		getSharedClientConnection().putJson(bridgeEndpoint, uri, "", getUserAgent(), null);
 	}
 
 	private void delete(String uri) throws SynapseException {

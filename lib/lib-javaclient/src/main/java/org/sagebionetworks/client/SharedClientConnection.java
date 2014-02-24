@@ -213,7 +213,7 @@ public class SharedClientConnection {
 		Session session = new Session();
 		session.setSessionToken(getCurrentSessionToken());
 		try {
-			putAuthEntity("/session", EntityFactory.createJSONObjectForEntity(session), userAgent);
+			putAuthEntity("/session", EntityFactory.createJSONObjectForEntity(session), userAgent, parameters);
 		} catch (SynapseForbiddenException e) {
 			throw new SynapseTermsOfUseException(e.getMessage());
 		} catch (JSONObjectAdapterException e) {
@@ -428,7 +428,7 @@ public class SharedClientConnection {
 		return postJson(authEndpoint, uri, entity.toString(), userAgent, parameters);
 	}
 
-	private JSONObject putAuthEntity(String uri, JSONObject entity, String userAgent)
+	private JSONObject putAuthEntity(String uri, JSONObject entity, String userAgent, Map<String,String> parameters)
 			throws SynapseException {
 		if (null == authEndpoint) {
 			throw new IllegalArgumentException("must provide endpoint");
@@ -440,7 +440,7 @@ public class SharedClientConnection {
 			throw new IllegalArgumentException("must provide entity");
 		}
 
-		return putJson(authEndpoint, uri, entity.toString(), userAgent);
+		return putJson(authEndpoint, uri, entity.toString(), userAgent, parameters);
 	}
 
 	public String getDataDirect(String endpoint, String uri) throws SynapseException {
@@ -519,14 +519,14 @@ public class SharedClientConnection {
 	 * @return
 	 * @throws SynapseException
 	 */
-	public JSONObject putJson(String endpoint, String uri, String jsonToPut, String userAgent) throws SynapseException {
+	public JSONObject putJson(String endpoint, String uri, String jsonToPut, String userAgent, Map<String,String> parameters) throws SynapseException {
 		if (null == endpoint) {
 			throw new IllegalArgumentException("must provide endpoint");
 		}
 		if (null == uri) {
 			throw new IllegalArgumentException("must provide uri");
 		}
-		JSONObject jsonObject = signAndDispatchSynapseRequest(endpoint, uri, "PUT", jsonToPut, defaultPOSTPUTHeaders, userAgent);
+		JSONObject jsonObject = signAndDispatchSynapseRequest(endpoint, uri, "PUT", jsonToPut, defaultPOSTPUTHeaders, userAgent, parameters);
 		return jsonObject;
 	}
 	

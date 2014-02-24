@@ -76,7 +76,7 @@ public class SynapseAdminClientImpl extends SynapseClientImpl implements Synapse
 			throws JSONObjectAdapterException, SynapseException {
 		JSONObject jsonObject = EntityFactory
 				.createJSONObjectForEntity(updated);
-		jsonObject = getSharedClientConnection().putJson(repoEndpoint, STACK_STATUS, jsonObject.toString(), getUserAgent());
+		jsonObject = getSharedClientConnection().putJson(repoEndpoint, STACK_STATUS, jsonObject.toString(), getUserAgent(), null);
 		return EntityFactory.createEntityFromJSONObject(jsonObject,
 				StackStatus.class);
 	}
@@ -103,7 +103,7 @@ public class SynapseAdminClientImpl extends SynapseClientImpl implements Synapse
 
 	@Override
 	public void purgeTrash() throws SynapseException {
-		getSharedClientConnection().putJson(repoEndpoint, ADMIN_TRASHCAN_PURGE, null, getUserAgent());
+		getSharedClientConnection().putJson(repoEndpoint, ADMIN_TRASHCAN_PURGE, null, getUserAgent(), null);
 	}
 	
 	@Override
@@ -184,7 +184,7 @@ public class SynapseAdminClientImpl extends SynapseClientImpl implements Synapse
 	public MigrationTypeCount deleteMigratableObject(MigrationType migrationType, IdList ids) throws JSONObjectAdapterException, SynapseException {
 		String uri = MIGRATION_DELETE + "?type=" + migrationType.name();
 		String jsonStr = EntityFactory.createJSONStringForEntity(ids);
-		JSONObject jsonObj = getSharedClientConnection().putJson(repoEndpoint, uri, jsonStr, getUserAgent());
+		JSONObject jsonObj = getSharedClientConnection().putJson(repoEndpoint, uri, jsonStr, getUserAgent(), null);
 		JSONObjectAdapter adapter = new JSONObjectAdapterImpl(jsonObj);
 		MigrationTypeCount mtc = new MigrationTypeCount();
 		mtc.initializeFromJSONObject(adapter);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.sagebionetworks.repo.model.ObjectType;
 import org.sagebionetworks.repo.model.ObservableEntity;
-import org.sagebionetworks.repo.web.NotFoundException;
 
 /**
  * Sends messages as part of a transaction.

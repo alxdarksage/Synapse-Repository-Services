@@ -1,6 +1,5 @@
 package org.sagebionetworks.javadoc.testclasses;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.sagebionetworks.schema.adapter.JSONArrayAdapter;

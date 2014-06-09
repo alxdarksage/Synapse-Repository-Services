@@ -3,8 +3,6 @@ package org.sagebionetworks.repo.model.dbo.dao.table;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -18,8 +16,6 @@ import org.sagebionetworks.repo.model.table.Row;
 import org.sagebionetworks.util.csv.CsvNullReader;
 
 import static org.sagebionetworks.repo.model.table.TableConstants.*;
-
-import au.com.bytecode.opencsv.CSVWriter;
 
 /**
  * Tests for CSVToRowIterator.

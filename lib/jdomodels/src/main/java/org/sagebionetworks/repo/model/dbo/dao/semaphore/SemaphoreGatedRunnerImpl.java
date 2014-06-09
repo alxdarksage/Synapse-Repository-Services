@@ -1,8 +1,6 @@
 package org.sagebionetworks.repo.model.dbo.dao.semaphore;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -19,12 +17,8 @@ import org.sagebionetworks.repo.model.dao.semaphore.SemaphoreGatedRunner;
 import org.sagebionetworks.repo.model.exception.LockUnavilableException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.amazonaws.transform.MapUnmarshaller;
-import com.amazonaws.transform.SimpleTypeUnmarshallers.IntegerUnmarshaller;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Ranges;
 import com.google.common.collect.Sets;
 
 /**

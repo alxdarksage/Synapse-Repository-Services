@@ -3,7 +3,6 @@ package org.sagebionetworks.repo.model.dao.table;
 import java.io.IOException;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
-import java.util.Set;
 
 import org.sagebionetworks.repo.model.table.CurrentRowCacheStatus;
 import org.sagebionetworks.repo.model.table.Row;

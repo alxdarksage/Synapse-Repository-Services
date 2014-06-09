@@ -2,7 +2,6 @@ package org.sagebionetworks.repo.model.dbo.dao.table;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +18,6 @@ import org.sagebionetworks.repo.model.table.ColumnModel;
 import org.sagebionetworks.repo.model.table.Row;
 import org.sagebionetworks.repo.model.table.RowReferenceSet;
 import org.sagebionetworks.repo.model.table.RowSet;
-import org.sagebionetworks.repo.web.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

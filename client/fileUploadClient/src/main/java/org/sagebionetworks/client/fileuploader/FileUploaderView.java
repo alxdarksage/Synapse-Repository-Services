@@ -3,8 +3,6 @@ package org.sagebionetworks.client.fileuploader;
 import java.io.File;
 import java.util.List;
 
-import org.apache.pivot.io.FileList;
-
 public interface FileUploaderView {
 
 	public interface Presenter {

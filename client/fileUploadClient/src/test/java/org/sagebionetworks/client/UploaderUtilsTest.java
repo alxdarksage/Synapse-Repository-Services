@@ -8,17 +8,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.sagebionetworks.client.fileuploader.FileUploader;
-import org.sagebionetworks.client.fileuploader.FileUploaderView;
 import org.sagebionetworks.client.fileuploader.StatusCallback;
 import org.sagebionetworks.client.fileuploader.UploadFuturesFactory;
 import org.sagebionetworks.client.fileuploader.UploadStatus;
@@ -27,9 +22,6 @@ import org.sagebionetworks.repo.model.Entity;
 import org.sagebionetworks.repo.model.EntityBundle;
 import org.sagebionetworks.repo.model.EntityBundleCreate;
 import org.sagebionetworks.repo.model.FileEntity;
-import org.sagebionetworks.repo.model.Project;
-import org.sagebionetworks.repo.model.UserProfile;
-import org.sagebionetworks.repo.model.UserSessionData;
 import org.sagebionetworks.repo.model.file.S3FileHandle;
 
 public class UploaderUtilsTest {	

@@ -3,7 +3,6 @@ package org.sagebionetworks;
 import static org.junit.Assert.*;
 
 import java.math.BigInteger;
-import java.net.URL;
 
 import org.junit.Test;
 

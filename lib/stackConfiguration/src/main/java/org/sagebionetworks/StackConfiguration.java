@@ -241,10 +241,6 @@ public class StackConfiguration {
 		return configuration.getFileServiceEndpoint();
 	}
 
-	public static String getBridgeServiceEndpoint() {
-		return configuration.getBridgeServiceEndpoint();
-	}
-
 	/**
 	 * This is the bucket for workflow-related files such as configuration or
 	 * search document files. Each workflow should store stuff under its own
@@ -671,11 +667,6 @@ public class StackConfiguration {
 	public static String getBCCSignupEnabled() {
 		return configuration
 				.getProperty("org.sagebionetworks.bcc.signup.enabled");
-	}
-
-	public static String getBridgeSpreadsheetTitle() {
-		return configuration
-				.getProperty("org.sagebionetworks.bridge.spreadsheet.title");
 	}
 
 	/**
@@ -1252,16 +1243,6 @@ public class StackConfiguration {
 				.getDecryptedProperty("org.sagebionetworks.repo.manager.jira.user.password");
 	}
 
-	public static String getBridgeDataMappingEncryptionKey() {
-		return "::TODO::";
-		// return configuration.getDecryptedProperty("org.sagebionetworks.bridge.data.mapping.encryptionkey");
-	}
-
-	public static String getBridgeDataEncryptionKey() {
-		return "::TODO::";
-		// return configuration.getDecryptedProperty("org.sagebionetworks.bridge.data.encryptionkey");
-	}
-
 	/**
 	 * Entity path for the root folder. This is to be bootstrapped.
 	 */
@@ -1336,15 +1317,6 @@ public class StackConfiguration {
 		return String.format(StackConstants.TABLE_ROW_CHANGE_BUCKET, StackConfiguration.getStack());
 	}
 	
-	/**
-	 * Get the name of the participant data bucket.
-	 * 
-	 * @return
-	 */
-	public String getParticipantDataBucketName() {
-		return String.format(StackConstants.PARTICIPANT_DATA_BUCKET, StackConfiguration.getStack());
-	}
-
 	/**
 	 * Get the max bytes per HTTP request for a table.
 	 * 

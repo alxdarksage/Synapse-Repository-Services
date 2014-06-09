@@ -2,7 +2,6 @@ package org.sagebionetworks.repo.model.dbo.persistence;
 
 import static org.sagebionetworks.repo.model.query.jdo.SqlConstants.*;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 

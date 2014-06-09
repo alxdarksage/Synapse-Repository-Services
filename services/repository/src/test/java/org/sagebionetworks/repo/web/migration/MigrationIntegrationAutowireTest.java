@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,22 +24,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.sagebionetworks.bridge.model.BridgeParticipantDAO;
-import org.sagebionetworks.bridge.model.BridgeUserParticipantMappingDAO;
-import org.sagebionetworks.bridge.model.Community;
-import org.sagebionetworks.bridge.model.CommunityTeamDAO;
-import org.sagebionetworks.bridge.model.ParticipantDataDAO;
-import org.sagebionetworks.bridge.model.ParticipantDataDescriptorDAO;
-import org.sagebionetworks.bridge.model.ParticipantDataId;
-import org.sagebionetworks.bridge.model.ParticipantDataStatusDAO;
-import org.sagebionetworks.bridge.model.data.ParticipantDataColumnDescriptor;
-import org.sagebionetworks.bridge.model.data.ParticipantDataColumnType;
-import org.sagebionetworks.bridge.model.data.ParticipantDataDescriptor;
-import org.sagebionetworks.bridge.model.data.ParticipantDataRepeatType;
-import org.sagebionetworks.bridge.model.data.ParticipantDataRow;
-import org.sagebionetworks.bridge.model.data.ParticipantDataStatus;
-import org.sagebionetworks.bridge.model.data.value.ParticipantDataStringValue;
-import org.sagebionetworks.bridge.model.data.value.ParticipantDataValue;
 import org.sagebionetworks.evaluation.model.Evaluation;
 import org.sagebionetworks.evaluation.model.EvaluationStatus;
 import org.sagebionetworks.evaluation.model.Submission;
@@ -63,11 +46,9 @@ import org.sagebionetworks.repo.model.dbo.dao.table.TableModelTestUtils;
 import org.sagebionetworks.repo.model.dbo.dao.table.TableModelUtils;
 import org.sagebionetworks.repo.model.dbo.persistence.DBOSessionToken;
 import org.sagebionetworks.repo.model.dbo.persistence.DBOTermsOfUseAgreement;
-import org.sagebionetworks.repo.model.dbo.principal.PrincipalAliasDaoImpl;
 import org.sagebionetworks.repo.model.file.FileHandle;
 import org.sagebionetworks.repo.model.file.PreviewFileHandle;
 import org.sagebionetworks.repo.model.file.S3FileHandle;
-import org.sagebionetworks.repo.model.jdo.KeyFactory;
 import org.sagebionetworks.repo.model.message.Comment;
 import org.sagebionetworks.repo.model.message.MessageToUser;
 import org.sagebionetworks.repo.model.migration.ListBucketProvider;
@@ -93,9 +74,6 @@ import org.sagebionetworks.repo.web.service.ServiceProvider;
 import org.sagebionetworks.schema.adapter.JSONObjectAdapterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 
 /**
  * This is an integration test to test the migration of all tables from start to finish.
@@ -155,24 +133,6 @@ public class MigrationIntegrationAutowireTest extends AbstractAutowiredControlle
 	private TeamDAO teamDAO;
 
 	@Autowired
-	private CommunityTeamDAO communityTeamDAO;
-
-	@Autowired
-	private BridgeParticipantDAO bridgeParticipantDAO;
-
-	@Autowired
-	private BridgeUserParticipantMappingDAO bridgeUserParticipantMappingDAO;
-
-	@Autowired
-	private ParticipantDataDAO participantDataDAO;
-
-	@Autowired
-	private ParticipantDataDescriptorDAO participantDataDescriptorDAO;
-
-	@Autowired
-	private ParticipantDataStatusDAO participantDataStatusDAO;
-
-	@Autowired
 	private AuthenticationDAO authDAO;
 
 	@Autowired
@@ -209,7 +169,6 @@ public class MigrationIntegrationAutowireTest extends AbstractAutowiredControlle
 	// Entities
 	private Project project;
 	private FileEntity fileEntity;
-	private Community community;
 	private Folder folderToTrash;
 
 	// requirement
@@ -262,9 +221,6 @@ public class MigrationIntegrationAutowireTest extends AbstractAutowiredControlle
 		createTermsOfUseAgreement(sampleGroup);
 		createMessages(sampleGroup, sampleFileHandleId);
 		createColumnModel();
-		UserGroup sampleGroup2 = createUserGroups(2);
-		createCommunity(sampleGroup2);
-		createParticipantData(sampleGroup);
 		createQuizResponse();
 	}
 	
@@ -630,61 +586,6 @@ public class MigrationIntegrationAutowireTest extends AbstractAutowiredControlle
 		mis.setInviteeId(otherUserId);
 
 		membershipInvtnSubmissionDAO.create(mis);
-	}
-
-	private void createCommunity(UserGroup group) throws Exception {
-		Team team = new Team();
-		team.setId(group.getId());
-		team.setName(UUID.randomUUID().toString());
-		team.setDescription("test team");
-		team = teamDAO.create(team);
-
-		// Create a community
-		community = new Community();
-		community.setName("MigrationIntegrationAutowireTest.Community");
-		community.setEntityType(Community.class.getName());
-		community.setTeamId(team.getId());
-		community = serviceProvider.getEntityService().createEntity(adminUserId, community, null, mockRequest);
-
-		communityTeamDAO.create(KeyFactory.stringToKey(community.getId()), Long.parseLong(team.getId()));
-	}
-
-	private void createParticipantData(UserGroup sampleGroup) throws Exception {
-		Long participantId = Long.parseLong(sampleGroup.getId()) ^ -1L;
-		bridgeParticipantDAO.create(participantId);
-		bridgeUserParticipantMappingDAO.setParticipantIdsForUser(Long.parseLong(sampleGroup.getId()),
-				Collections.<ParticipantDataId> singletonList(new ParticipantDataId(participantId)));
-		ParticipantDataDescriptor participantDataDescriptor = new ParticipantDataDescriptor();
-		participantDataDescriptor.setName(participantId.toString() + "desc");
-		participantDataDescriptor.setRepeatType(ParticipantDataRepeatType.ALWAYS);
-		participantDataDescriptor.setRepeatFrequency("0 0 4 * * ? *");
-		participantDataDescriptor = participantDataDescriptorDAO.createParticipantDataDescriptor(participantDataDescriptor);
-		ParticipantDataColumnDescriptor participantDataColumnDescriptor = new ParticipantDataColumnDescriptor();
-		participantDataColumnDescriptor.setParticipantDataDescriptorId(participantDataDescriptor.getId());
-		participantDataColumnDescriptor.setName("a");
-		participantDataColumnDescriptor.setColumnType(ParticipantDataColumnType.STRING);
-		participantDataDescriptorDAO.createParticipantDataColumnDescriptor(participantDataColumnDescriptor);
-		ParticipantDataColumnDescriptor participantDataColumnDescriptor2 = new ParticipantDataColumnDescriptor();
-		participantDataColumnDescriptor2.setParticipantDataDescriptorId(participantDataDescriptor.getId());
-		participantDataColumnDescriptor2.setName("b");
-		participantDataColumnDescriptor2.setColumnType(ParticipantDataColumnType.STRING);
-		participantDataDescriptorDAO.createParticipantDataColumnDescriptor(participantDataColumnDescriptor2);
-		ParticipantDataRow dataRow = new ParticipantDataRow();
-		ParticipantDataStringValue stringValue1 = new ParticipantDataStringValue();
-		stringValue1.setValue("1");
-		ParticipantDataStringValue stringValue2 = new ParticipantDataStringValue();
-		stringValue2.setValue("2");
-		dataRow.setData(ImmutableMap.<String, ParticipantDataValue> builder().put("a", stringValue1).put("b", stringValue2).build());
-		List<ParticipantDataRow> data = Lists.newArrayList(dataRow);
-		participantDataDAO.append(new ParticipantDataId(participantId), participantDataDescriptor.getId(), data,
-				Lists.newArrayList(participantDataColumnDescriptor, participantDataColumnDescriptor2));
-		ParticipantDataStatus status = new ParticipantDataStatus();
-		status.setParticipantDataDescriptorId(participantDataDescriptor.getId());
-		status.setLastEntryComplete(false);
-		status.setLastPrompted(new Date());
-		status.setLastStarted(new Date());
-		participantDataStatusDAO.update(Collections.<ParticipantDataStatus> singletonList(status), ImmutableMap
-				.<String, ParticipantDataId> builder().put(participantDataDescriptor.getId(), new ParticipantDataId(participantId)).build());
 	}
 
 	@After

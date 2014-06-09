@@ -2,7 +2,6 @@ package org.sagebionetworks.repo.model.dao.semaphore;
 
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 
 /**
  * An abstraction for a job runner that is gated by a semaphore.

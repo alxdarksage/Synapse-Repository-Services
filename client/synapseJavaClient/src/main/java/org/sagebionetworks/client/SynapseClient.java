@@ -67,7 +67,6 @@ import org.sagebionetworks.repo.model.attachment.S3AttachmentToken;
 import org.sagebionetworks.repo.model.auth.NewUser;
 import org.sagebionetworks.repo.model.auth.Session;
 import org.sagebionetworks.repo.model.auth.UserEntityPermissions;
-import org.sagebionetworks.repo.model.auth.Username;
 import org.sagebionetworks.repo.model.dao.WikiPageKey;
 import org.sagebionetworks.repo.model.doi.Doi;
 import org.sagebionetworks.repo.model.file.ChunkRequest;
@@ -1518,7 +1517,8 @@ public interface SynapseClient extends BaseClient {
 	/**
 	 * @param domain
 	 *            Which client did the user access to authenticate via a third
-	 *            party provider (Synapse or Bridge)?
+	 *            party provider (Synapse or another application using Synapse's
+	 *            backend services)?
 	 */
 	public Session passThroughOpenIDParameters(String queryString,
 			Boolean createUserIfNecessary, DomainType domain)
